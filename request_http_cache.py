@@ -46,7 +46,7 @@ def request_url(
                 headers=headers,
                 stream=False,
             )
-        except requests.Timeout as err:
+        except (requests.Timeout, requests.ConnectionError) as err:
             if retry_count > 0:
                 time.sleep(retry_delay)
                 retry_count -= 1
