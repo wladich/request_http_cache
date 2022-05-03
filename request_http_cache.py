@@ -66,8 +66,13 @@ def request_url(
         if len(response.content) == 0:
             return url, "response empty"
         for name, value in check_headers.items():
-            if response.headers.get(name) != value:
-                return url, "response headers check failed (%s: %s)" % (name, value)
+            received_value = response.headers.get(name)
+            if received_value != value:
+                if received_value is None:
+                    header_str = 'no `%s` header' % name
+                else:
+                    header_str = '%s: %s' % (name, received_value)
+                return url, "response headers check failed (%s)" % header_str
         return url, None
 
 
